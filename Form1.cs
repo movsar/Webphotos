@@ -59,7 +59,7 @@ namespace Webphotos
             }
 
             ProgressBar1.Value = 0;
-            ProgressBar1.Maximum = ListBox1.Items.Count;
+            ProgressBar1.Maximum = ListBox1.Items.Count -1;
 
             System.Collections.IList list = ListBox1.Items;
             for (int i = 0; i < list.Count; i++)
@@ -75,7 +75,7 @@ namespace Webphotos
             ListBox1.Items.Clear();
         }
 
-        private void ResizeImage(FileInfo fileInfo, int maxSizeInKilobytes)
+        private void ResizeImage(FileInfo fileInfo, int maxSizeInBytes)
         {
             string extension = fileInfo.Extension.ToLowerInvariant();
             if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
@@ -110,8 +110,7 @@ namespace Webphotos
 
                         // Save to stream to check file size
                         image.Save(memoryStream, GetEncoder(extension));
-                        long lengthInKilobytes = memoryStream.Length / 1024;
-                        if (lengthInKilobytes <= maxSizeInKilobytes)
+                        if (memoryStream.Length <= maxSizeInBytes)
                             break; // Stop if the file size is under the required size
                         scalePercent -= 10; // Decrease scale percent to reduce size
 
